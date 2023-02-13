@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  prestashop-web:
+    image: prestashop/prestashop:1.7.8.5
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      DB_SERVER: prestashop-mysql
+    networks:
+      - prestashop-network
+
+  prestashop-mysql:
+    privileged: true
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    networks:
+      - prestashop-network
+
+networks:
+  prestashop-network:
+    external: true
