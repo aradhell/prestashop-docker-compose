@@ -20,6 +20,7 @@ services:
       - '127.0.0.1:3307:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: prestashop
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
